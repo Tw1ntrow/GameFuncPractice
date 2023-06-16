@@ -34,7 +34,7 @@ public class LoginBonusView : MonoBehaviour
         {
             // 各ログインボーナスのパネルを表示
             var itemPanel = Instantiate(itemPanelObj, bonusPanelParent);
-            itemPanel.GetComponent<ItemPanel>().ViewItem(item.reward_name, item.reward_num.ToString());
+            itemPanel.GetComponent<ItemPanel>().ViewItem(item.reward_name, item.reward_num.ToString(), item.reward_Id);
 
             // 過去に受け取ったログインボーナスの場合、表示を変える
             if (item.day < userLoginBonus.LastLoginDay)

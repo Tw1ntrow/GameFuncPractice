@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class ItemPanel : MonoBehaviour
 {
@@ -7,9 +9,20 @@ public class ItemPanel : MonoBehaviour
     private Text ItemName;
     [SerializeField]
     private Text ItemCount;
-    public void ViewItem(string name,string count)
+
+    private Action<int> onClose;
+    private int itemId;
+
+    public void ViewItem(string name,string count,int itemid ,Action<int> OnCloseButton = null)
     {
         ItemName.text = name;
-        ItemCount.text = count;
+        ItemCount.text = $"Å~{count}";
+        itemId = itemid;
+        onClose = OnCloseButton;
+    }
+
+    public void OnClickButton()
+    {
+        onClose?.Invoke(itemId);
     }
 }
