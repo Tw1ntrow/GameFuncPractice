@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 public class Inventory
 {
@@ -19,6 +20,20 @@ public class Inventory
                 },
                 Quantity = i //@“K“–‚ÉŒÂ”‚ðÝ’è
             });
+        }
+    }
+
+    public static void AddItem(Item item, int quantity)
+    {
+        var inventoryItem = Items.FirstOrDefault(i => i.Item.Id == item.Id);
+        if (inventoryItem == null)
+        {
+            inventoryItem = new InventoryItem { Item = item, Quantity = quantity };
+            Items.Add(inventoryItem);
+        }
+        else
+        {
+            inventoryItem.Quantity += quantity;
         }
     }
 }
