@@ -12,17 +12,15 @@ public class ShopManager : MonoBehaviour
     [SerializeField]
     private CommonDialog commonDialog;
 
-    [SerializeField]
-    private Text gold;
-
     void Start()
     {
+        // テスト用に所持金を1000にする
         UserCurrency.AddCurrency(CurrencyManager.GoldInstance, 1000);
-        DebugGold();
 
+        // 商品リストを作成
         foreach (var product in ProductTable.TestTable)
         {
-            shopListView.AddShopList(product, IsSoldOut(product), OnClickPanel);
+            shopListView.AddShopList(product, IsSoldOut(product), DisplayProductDialog);
         }
 
     }
@@ -37,7 +35,9 @@ public class ShopManager : MonoBehaviour
 
         return product.Price > UserCurrency.GetBalance(product.CurrencyType);
     }
-    public void OnClickPanel(int ProductId)
+
+    // 商品パネルが押された際、数量選択ダイアログを表示
+    public void DisplayProductDialog(int ProductId)
     {
         ProductDialog dialog = Instantiate<ProductDialog>(productDialog, transform);
         IPurchasable product = ProductTable.TestTable.Find((product) => product.Id == ProductId);
@@ -51,7 +51,7 @@ public class ShopManager : MonoBehaviour
     {
         int maxQuantityByBalance = UserCurrency.GetBalance(product.CurrencyType) / product.Price;
 
-        if (product.Stock == -1) // Unlimited stock
+        if (product.Stock == -1) // 在庫が-1の場合は常に売り切れているとみなす
         {
             return maxQuantityByBalance;
         }
@@ -61,25 +61,22 @@ public class ShopManager : MonoBehaviour
         }
     }
 
+    // 購入成功時の処理
     private void OnSucsessPurchase(int productId, int quantity)
     {
+        // 購入成功時のダイアログを表示
         CommonDialog dialog = Instantiate<CommonDialog>(commonDialog, transform);
         dialog.ViewDialog("購入成功", $"商品ID:{productId}を{quantity}個購入しました。");
 
+        // 実際に購入した商品をイベントリに格納
         IPurchasable product = ProductTable.TestTable.Find((product) => product.Id == productId);
         product.OnPurchase(quantity);
 
+        // 購入後の在庫数に応じて、商品パネルの売り切れ表示を更新
         foreach (var productTable in ProductTable.TestTable)
         {
             shopListView.UpdateShopList(productTable.Id, IsSoldOut(productTable));
         }
-
-        DebugGold();
-    }
-
-    private void DebugGold()
-    {
-        gold.text = $"残額:{UserCurrency.GetBalance(CurrencyManager.GoldInstance).ToString()}";
 
     }
 
