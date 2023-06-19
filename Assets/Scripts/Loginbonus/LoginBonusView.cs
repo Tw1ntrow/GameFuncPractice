@@ -54,7 +54,7 @@ public class LoginBonusView : MonoBehaviour
                 var dialogComponent = dialog.GetComponent<CommonDialog>();
                 string title = "Login Bonus!";
                 string message = $"{item.reward_name}Ç{item.reward_num}å¬älìæÇµÇ‹ÇµÇΩÅI";
-                dialogComponent.ViewDialog(title, message);
+                dialogComponent.ViewDialog(new CommonDialogParameter(title, message));
 
             }
 

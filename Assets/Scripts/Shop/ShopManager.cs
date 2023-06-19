@@ -66,7 +66,7 @@ public class ShopManager : MonoBehaviour
     {
         // 購入成功時のダイアログを表示
         CommonDialog dialog = Instantiate<CommonDialog>(commonDialog, transform);
-        dialog.ViewDialog("購入成功", $"商品ID:{productId}を{quantity}個購入しました。");
+        dialog.ViewDialog(new CommonDialogParameter("購入成功", $"商品ID:{productId}を{quantity}個購入しました。"));
 
         // 実際に購入した商品をイベントリに格納
         IPurchasable product = ProductTable.TestTable.Find((product) => product.Id == productId);

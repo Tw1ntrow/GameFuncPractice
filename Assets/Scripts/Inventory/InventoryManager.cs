@@ -22,7 +22,7 @@ public class InventoryManager : MonoBehaviour
         // アイテム詳細ダイアログを表示
         InventoryItem item = Inventory.Items.Find(x => x.Item.Id == itemId);
         CommonDialog commondialog = Instantiate<CommonDialog>(commonDialog,this.transform);
-        commondialog.ViewDialog(item.Item.Name, item.Item.Description);
+        commondialog.ViewDialog(new CommonDialogParameter(item.Item.Name, item.Item.Description));
     }
 
     private List<InventoryItem> DownloadInventory()
