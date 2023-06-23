@@ -11,8 +11,11 @@ public class DialogManager : MonoBehaviour
     // 外から渡せばMonoBehaviourは不要だが、一旦これで
     [SerializeField]
     private Transform dialogParent;
+    // ダイアログのプレハブ、本来は外からダウンロードする
     [SerializeField]
     private GameObject dialogPrefab;
+    [SerializeField]
+    private GameObject webViewPrefab;
 
     private List<IDialog> dialogList = new List<IDialog>();
 
@@ -32,7 +35,7 @@ public class DialogManager : MonoBehaviour
     // テスト用
     private void Start()
     {
-        CreateDialog<CommonDialog>(new CommonDialogParameter("テスト", "本文"));
+        CreateDialog<WebViewDialog>(new WebViewDialogParameter("https://www.google.co.jp",new Vector2(1000,600)));
     }
 
     /// <summary>
@@ -42,7 +45,8 @@ public class DialogManager : MonoBehaviour
     /// <param name="parameter"></param>
     public void CreateDialog<T>(DialogParameter parameter) where T : IDialog
     {
-        T dialogGO = Instantiate(dialogPrefab, dialogParent).GetComponent<T>();
+        // 本来はプレハブのクラス名から個別のダイアログをダウンロードする
+        T dialogGO = Instantiate(webViewPrefab, dialogParent).GetComponent<T>();
         dialogGO.ViewDialog(parameter);
         dialogGO.OnClickCloseButton += CloseDialog;
         dialogList.Add(dialogGO);
