@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,12 +33,6 @@ public class DialogManager : MonoBehaviour
         }
     }
 
-    // テスト用
-    private void Start()
-    {
-        CreateDialog<WebViewDialog>(new WebViewDialogParameter("https://www.google.co.jp",new Vector2(1000,600)));
-    }
-
     /// <summary>
     /// ダイアログを生成する
     /// </summary>
@@ -45,8 +40,23 @@ public class DialogManager : MonoBehaviour
     /// <param name="parameter"></param>
     public void CreateDialog<T>(DialogParameter parameter) where T : IDialog
     {
-        // 本来はプレハブのクラス名から個別のダイアログをダウンロードする
-        T dialogGO = Instantiate(webViewPrefab, dialogParent).GetComponent<T>();
+        GameObject prefab;
+
+        // 本来は名前一致でサーバーからダウンロードする想定
+        if (typeof(T) == typeof(CommonDialog))
+        {
+            prefab = dialogPrefab;
+        }
+        else if (typeof(T) == typeof(WebViewDialog))
+        {
+            prefab = webViewPrefab;
+        }
+        else
+        {
+            throw new ArgumentException($"Invalid dialog type: {typeof(T)}");
+        }
+
+        T dialogGO = Instantiate(prefab, dialogParent).GetComponent<T>();
         dialogGO.ViewDialog(parameter);
         dialogGO.OnClickCloseButton += CloseDialog;
         dialogList.Add(dialogGO);
