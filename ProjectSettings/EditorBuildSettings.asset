@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/WebView.unity
-    guid: c75697939f985bc47b816c3dc10e4bea
+    path: Assets/Scenes/Notification.unity
+    guid: 39f76190bf91b0444aa9bed7c99937e8
   m_configObjects: {}
