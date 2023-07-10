@@ -8,4 +8,5 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Notification.unity
     guid: 39f76190bf91b0444aa9bed7c99937e8
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 952d827f33ca8364d943e02a1a1f22c1, type: 2}
