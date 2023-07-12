@@ -10,39 +10,39 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: TestLabel
+  m_Name: TestLabel2
   m_EditorClassIdentifier: 
-  m_GroupName: TestLabel
+  m_GroupName: TestLabel2
   m_Data:
     m_SerializedData: []
-  m_GUID: a4b5c1ad0843f4f4fbfd35040be58391
+  m_GUID: fcc0ef736d839db44a94bf3decd2ad47
   m_SerializeEntries:
-  - m_GUID: 18b83305607e42041bfeffef0d5d0125
-    m_Address: Assets/Texture/icon1.png
+  - m_GUID: 5430c7e786dd3ed4d90e8d056e3eca25
+    m_Address: Assets/Texture/AddressableDownloader/TSUKUMO-A.jpg
     m_ReadOnly: 0
     m_SerializedLabels:
     - TestLabel
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e78a324d16abd9f439b0d91c63ee551a
-    m_Address: Assets/Texture/icon0.png
+  - m_GUID: 8558aca2eb13f7344a192d04ad6cd679
+    m_Address: Assets/Texture/AddressableDownloader/G-GEAR_C1.jpg
     m_ReadOnly: 0
     m_SerializedLabels:
     - TestLabel
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 00fd5d523cadafa4ab130d1195cf6a0a
-    m_Address: Assets/Texture/TestLabel.png
+  - m_GUID: 860c9752152d1614e98d3269f93441ad
+    m_Address: Assets/Texture/AddressableDownloader/G-GEAR-G1.jpg
     m_ReadOnly: 0
     m_SerializedLabels:
     - TestLabel
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 57680adf39485354abfcb605231df5ff
-    m_Address: Assets/Texture/AddressableDownloader/TSUKUMO-B.jpg
+  - m_GUID: bcb513ef4a5c6be4e90a7a5e95cf4719
+    m_Address: Assets/Texture/AddressableDownloader/TSUKUMO-C.jpg
     m_ReadOnly: 0
     m_SerializedLabels:
     - TestLabel
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e35fb979d4159344da9e01dda74e02b4
-    m_Address: Assets/Texture/AddressableDownloader/G-GEAR-G2.jpg
+  - m_GUID: 778b9079de665fb4ebf039981aa72464
+    m_Address: Assets/Texture/AddressableDownloader/G-GEAR_C2.jpg
     m_ReadOnly: 0
     m_SerializedLabels:
     - TestLabel
@@ -51,5 +51,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: f3af3b669f101b84eb5f7293fa2d09fb, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 2ce3713162a93074eb3de2514bbc7f38, type: 2}
-    - {fileID: 11400000, guid: 1e713d8427df5cc45bccfb41cf2c4c0c, type: 2}
+    - {fileID: 11400000, guid: a7ff55715cf60b54789e5b4fe4e693bd, type: 2}
+    - {fileID: 11400000, guid: 4873f40019a9aae4f80c54adb958174e, type: 2}

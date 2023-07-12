@@ -7,19 +7,19 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 
-public class AssetDownloader:MonoBehaviour
+public class AssetDownloader : MonoBehaviour
 {
     public class DownloadInfo
     {
         public IResourceLocation location;
         public AsyncOperationHandle handle;
         public int totalAssets;
+        public int completedAssets;
     }
 
     public event Action<DownloadInfo> ProgressChanged;
     public event Action<DownloadInfo> AssetDownloadCompleted;
-    public event Action OnloadCompleted;
-
+    public event Action OnLoadCompleted;
 
     public static AssetDownloader instance;
 
@@ -38,19 +38,24 @@ public class AssetDownloader:MonoBehaviour
         }
     }
 
-    // ラベルに紐づくアセットをダウンロードする
-    // 先にラベルに紐づくアセットのリソースロケーションを取得し、
-    // そのリソースロケーションに紐づく依存関係をストレージにダウンロードする
-    // ストレージにダウンロードしたアセットはLoadAssetAsyncで取得する
+    // ラベルに紐づくアセットのダウンロードを開始
+    // ダウンロード進行状況はイベントで通知
+    // DependencyHashCode毎にグループ化する事で、アセットバンドル毎に分割してロードができる
     public async void DownloadAsset(string label)
     {
-        List<IResourceLocation> locations = new List<IResourceLocation>();
-        var loadOperation = await Addressables.LoadResourceLocationsAsync(label).Task;
-        locations = loadOperation.ToList();
+        // ラベルに紐づくアセットのリソースロケーションを取得
+        var locations = await Addressables.LoadResourceLocationsAsync(label).Task;
 
-        foreach (var location in locations)
+        // DependencyHashCodeでグループ化
+        var locationGroups = locations.ToList().GroupBy(x => x.DependencyHashCode);
+
+        int completedAssets = 0;
+        int totalAssets = locationGroups.Count();
+
+        foreach (var locationGroup in locationGroups)
         {
-            var handle = Addressables.LoadAssetAsync<object>(location);
+            // 各グループごとに依存関係のダウンロードを開始
+            var handle = Addressables.DownloadDependenciesAsync(locationGroup.ToList());
 
             // ダウンロード進行状況
             while (!handle.IsDone)
@@ -58,20 +63,82 @@ public class AssetDownloader:MonoBehaviour
                 // イベントを発行
                 ProgressChanged?.Invoke(new DownloadInfo
                 {
-                    location = location,
+                    location = locationGroup.First(),
                     handle = handle,
-                    totalAssets = locations.Count
+                    totalAssets = totalAssets,
+                    completedAssets = completedAssets
                 });
-                await System.Threading.Tasks.Task.Yield();
+                await Task.Yield();
             }
+
+            completedAssets += 1;
 
             AssetDownloadCompleted?.Invoke(new DownloadInfo
             {
-                location = location,
-                handle = handle
+                location = locationGroup.First(),
+                handle = handle,
+                totalAssets = totalAssets,
+                completedAssets = completedAssets
             });
         }
 
-        OnloadCompleted?.Invoke();
+        OnLoadCompleted?.Invoke();
+    }
+
+    // アセットをロード
+    public async Task<T> LoadAsset<T>(string key)
+    {
+        try
+        {
+            var result = await Addressables.LoadAssetAsync<T>(key).Task;
+            return result;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Failed to load asset: {ex.Message}");
+            throw new Exception();
+        }
+    }
+
+    /// <summary>
+    /// アセットをロード
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="asset"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public async Task<T> LoadAsset<T>(AssetReference asset)
+    {
+        try
+        {
+            var result = await Addressables.LoadAssetAsync<T>(asset).Task;
+            return result;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Failed to load asset: {ex.Message}");
+            throw new Exception();
+        }
+    }
+
+    /// <summary>
+    /// アセットをインスタンス化
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public async Task<GameObject> InstantiateAsync<T>(string key)
+    {
+        try
+        {
+            var result = await Addressables.InstantiateAsync(key).Task;
+            return result;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Failed to load asset: {ex.Message}");
+            throw new Exception();
+        }
     }
 }

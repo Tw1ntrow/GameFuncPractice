@@ -12,7 +12,7 @@ public class DownloadProgressbar : MonoBehaviour
     [SerializeField]
     private Text progressText;
 
-    public void UpdateProgressSlioder(float percentComplete, float totalComplete, string progress)
+    public void UpdateProgressSlider(float percentComplete, float totalComplete, string progress)
     {
         currentProgressSlider.value = percentComplete;
         totalProgressSlider.value = totalComplete;
