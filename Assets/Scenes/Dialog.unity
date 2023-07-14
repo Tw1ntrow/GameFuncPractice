@@ -303,6 +303,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1016693057}
   - component: {fileID: 1016693058}
+  - component: {fileID: 1016693059}
   m_Layer: 0
   m_Name: DialogManaget
   m_TagString: Untagged
@@ -339,6 +340,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogParent: {fileID: 1066543749}
   dialogPrefab: {fileID: 6868320751384248032, guid: c9aa9dda1d0e2e84ba4a6e70deae5926, type: 3}
+  webViewPrefab: {fileID: 0}
+--- !u!114 &1016693059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016693056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b4df955af7ca1e48b5e5c71106ce490, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1066543745
 GameObject:
   m_ObjectHideFlags: 0
