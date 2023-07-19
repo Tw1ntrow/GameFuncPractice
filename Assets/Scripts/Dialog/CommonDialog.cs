@@ -7,7 +7,7 @@ using UnityEngine.UI;
 /// 汎用ダイアログ
 /// 一旦タイトル、本文、閉じるボタンのみ配置
 /// </summary>
-public class CommonDialog : MonoBehaviour, IDialog
+public class CommonDialog : MonoBehaviour, IDialog,IBackButtonHandler
 {
     [SerializeField]
     private Text titleText;
@@ -94,4 +94,8 @@ public class CommonDialog : MonoBehaviour, IDialog
         Destroy(this.gameObject);
     }
 
+    public void HandleBackButton()
+    {
+        OnClickCloseButton?.Invoke(this);
+    }
 }

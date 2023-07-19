@@ -60,6 +60,13 @@ public class DialogManager : MonoBehaviour
         dialogGO.ViewDialog(parameter);
         dialogGO.OnClickCloseButton += CloseDialog;
         dialogList.Add(dialogGO);
+
+        if(dialogGO is IBackButtonHandler)
+        {
+            var iBuckButtonHandler = dialogGO as IBackButtonHandler;
+            BackButtonManager.Instance.PushBackButtonHandler(iBuckButtonHandler);
+        }
+
     }
 
     /// <summary>
@@ -72,5 +79,8 @@ public class DialogManager : MonoBehaviour
         dialog.CloseDialog();
         // リストから引数のダイアログを削除
         dialogList.Remove(dialog);
+
+        BackButtonManager.Instance.PopBackButtonHandler();
+
     }
 }
