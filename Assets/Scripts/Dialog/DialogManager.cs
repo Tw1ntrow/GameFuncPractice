@@ -80,7 +80,11 @@ public class DialogManager : MonoBehaviour
         // リストから引数のダイアログを削除
         dialogList.Remove(dialog);
 
-        BackButtonManager.Instance.PopBackButtonHandler();
+        if(BackButtonManager.Instance != null)
+        {
+            BackButtonManager.Instance.PopBackButtonHandler();
+
+        }
 
     }
 }
