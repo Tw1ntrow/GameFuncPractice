@@ -24,6 +24,8 @@ public class QuestDetail : MonoBehaviour
     public void OnActButton()
     {
         onActButton?.Invoke(id);
+        Destroy(gameObject);
+
     }
 
     public void OnCancel()

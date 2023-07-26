@@ -31,6 +31,8 @@ public class QuestList : MonoBehaviour
 
     public void OnQuest(int id)
     {
+        QuestDetail questDetail = Instantiate<QuestDetail>(this.questDetail, questDetailParent);
+
         questDetail.SetView(questDetaList[id].Title, questDetaList[id].Description, id, OnAct);
     }
 
