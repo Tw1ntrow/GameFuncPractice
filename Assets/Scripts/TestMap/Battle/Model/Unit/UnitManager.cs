@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ProjectX.Battle.Model.Unit
 {
@@ -7,13 +8,14 @@ namespace ProjectX.Battle.Model.Unit
     /// </summary>
     public class UnitManager
     {
-        private List<Battle.Unit> _units = new List<Battle.Unit>();
+        private List<Battle.Unit> _units;
 
         /// <summary>
         /// 生成されるユニットリストを貰いユニットを生成する
         /// </summary>
         public UnitManager(List<Battle.Unit> units)
         {
+            _units = new List<Battle.Unit>();
             _units = units;
         }
 
@@ -35,6 +37,12 @@ namespace ProjectX.Battle.Model.Unit
         public List<Battle.Unit> GetUnits()
         {
             return _units;
+        }
+
+        // 特定の陣営のユニットを全て取得
+        public List<Battle.Unit> GetUnitsByFaction(int faction)
+        {
+            return _units.Where(unit => unit.Faction.Value == faction).ToList();
         }
     }
 }

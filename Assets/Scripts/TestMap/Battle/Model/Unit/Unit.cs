@@ -1,3 +1,4 @@
+using Codice.Client.Common;
 using UniRx;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -19,8 +20,8 @@ namespace ProjectX.Battle
         public IReadOnlyReactiveProperty<int> Attack => _attack;
 
         // ユニットの位置
-        private ReactiveProperty<Vector2?> _position = new ReactiveProperty<Vector2?>();
-        public IReadOnlyReactiveProperty<Vector2?> Position => _position;
+        private ReactiveProperty<Vector2Int> _position = new ReactiveProperty<Vector2Int>();
+        public IReadOnlyReactiveProperty<Vector2Int> Position => _position;
 
         // unitの名前
         private ReactiveProperty<string> _name = new ReactiveProperty<string>();
@@ -30,7 +31,43 @@ namespace ProjectX.Battle
         private ReactiveProperty<int> _faction = new ReactiveProperty<int>();
         public IReadOnlyReactiveProperty<int> Faction => _faction;
 
-        public void SetPosition(Vector2? value)
+        private ReactiveProperty<int> _actionPoint = new ReactiveProperty<int>();
+        public IReadOnlyReactiveProperty<int> ActionPoint => _actionPoint;
+
+        // ユニットの行動
+        // ユニットが出来る行動(他のユニットやパラメーターに影響を及ぼすもの)は全て行動して表現され、ここに格納される
+        private ReactiveCollection<UnitAction> unitActions = new ReactiveCollection<UnitAction>();
+        public IReadOnlyReactiveCollection<UnitAction> UnitActions => unitActions;
+
+        public Unit(int id, int hp, int attack, Vector2Int position, string name, int faction, int actionPoint)
+        {
+            _id.Value = id;
+            _hp.Value = hp;
+            _attack.Value = attack;
+            _position.Value = position;
+            _name.Value = name;
+            _faction.Value = faction;
+            _actionPoint.Value = actionPoint;
+        }
+
+        public void AddAction(UnitAction action)
+        {
+            unitActions.Add(action);
+        }
+
+        public void RemoveAction(UnitAction action)
+        {
+            unitActions.Remove(action);
+        }
+
+        public void SetActionPoint(int value)
+        {
+            _actionPoint.Value = value;
+            //デバッグログ
+            Debug.Log($"{_name.Value} - ActionPoint:{_actionPoint.Value}");
+        }
+
+        public void SetPosition(Vector2Int value)
         {
             _position.Value = value;
             //デバッグログ

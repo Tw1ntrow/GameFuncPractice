@@ -20,7 +20,7 @@ namespace ProjectX.Battle
         {
             _status.Value = value;
             //デバッグログ
-            Debug.Log($"{_status.Value} - HP:{_status.Value}");
+            //Debug.Log($"{_status.Value} - HP:{_status.Value}");
         }
 
         public void AddGridEffect(GridEffect gridEffect)

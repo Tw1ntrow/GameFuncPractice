@@ -10,12 +10,37 @@ public class MapData
     private ReactiveDictionary<Vector2Int, ProjectX.Battle.Grid> _data { get; set; }
     public IReadOnlyReactiveDictionary<Vector2Int, ProjectX.Battle.Grid> Data => _data;
 
+    private ReactiveProperty<Vector2Int> _size { get; set; }
+    private IReadOnlyReactiveProperty<Vector2Int> Size => _size;
+
     public MapData(Dictionary<Vector2Int, ProjectX.Battle.Grid> map)
     {
-        foreach(var grid in map)
+        _data = new ReactiveDictionary<Vector2Int, ProjectX.Battle.Grid>();
+        int maxX = int.MinValue;
+        int maxY = int.MinValue;
+        foreach (var grid in map)
         {
-            _data.Add(grid.Key,grid.Value);
+            _data.Add(grid.Key, grid.Value);
+
+            // 現在のグリッドのXまたはY座標が最大値より大きい場合、最大値を更新
+            if (grid.Key.x > maxX)
+            {
+                maxX = grid.Key.x;
+            }
+            if (grid.Key.y > maxY)
+            {
+                maxY = grid.Key.y;
+            }
         }
+
+        // マップのサイズを設定
+        // グリッド座標は0から始まるため、1を加える
+        _size = new ReactiveProperty<Vector2Int>(new Vector2Int(maxX + 1, maxY + 1));
+    }
+
+    public bool CanMove(Vector2Int position)
+    {
+        return _data.ContainsKey(position) && _data[position].Status.Value == 0;
     }
 
     /// <summary>

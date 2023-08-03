@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using UniRx;
 
 public class BattleLifecycleTest
 {
@@ -18,7 +19,7 @@ public class BattleLifecycleTest
     public void TestInitialization()
     {
         // 初期化が正しく行われるかをテスト
-        _isInitialized = _gameStateController.Initialize(null,null) == 0;
+        _isInitialized = _gameStateController.Initialize(new TestUnitCreator(), new TestMapCreatable()) == 0;
         Assert.IsTrue(_isInitialized, "Failed to initialize GameStateController.");
     }
 
@@ -26,7 +27,7 @@ public class BattleLifecycleTest
     public void TestUnInitialization()
     {
         // 終了処理が正しく行われるかをテスト
-        _isUninitialized = _gameStateController.Initialize(null, null) == 0;
+        _isUninitialized = _gameStateController.UnInitialize() == 0;
         Assert.IsTrue(_isUninitialized, "Failed to uninitialize GameStateController.");
     }
 

@@ -1,4 +1,5 @@
 using ProjectX.Battle.Model.Unit;
+using UniRx;
 
 public class GameStateController
 {
@@ -11,9 +12,11 @@ public class GameStateController
         {
             return -1;
         }
-        new UnitManager(unitCreatable.GetUnits());
-        new MapData(mapCreatable.GetMap());
-
+        var unitManager = new UnitManager(unitCreatable.GetUnits());
+        var mapData = new MapData(mapCreatable.GetMap());
+        var turn = new PlayerTurn();
+        turn.StartTurn(unitManager, mapData);
+        turn.OnTurnEnd.Subscribe(_ => UnInitialize());
         return 0;
     }
 
