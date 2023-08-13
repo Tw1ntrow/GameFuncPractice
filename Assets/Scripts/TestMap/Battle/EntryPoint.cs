@@ -4,7 +4,7 @@ public class EntryPoint : MonoBehaviour
 {
     void Awake()
     {
-        new GameStateController { }.Initialize(new TestUnitCreator(), new TestMapCreatable());
+        new GameStateController { }.Initialize(null, null);
     }
 
 }
