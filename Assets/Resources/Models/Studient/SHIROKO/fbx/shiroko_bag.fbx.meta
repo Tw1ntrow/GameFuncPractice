@@ -1,0 +1,191 @@
+fileFormatVersion: 2
+guid: f9bd9fc4dcf9da54995627df4a16c862
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: back
+    100002: back1
+    100004: back2
+    100006: floor
+    100008: line
+    100010: line 1
+    100012: line 2
+    100014: polySurface173
+    100016: polySurface173 1
+    100018: polySurface173 2
+    100020: pPlane26
+    100022: pPlane27
+    100024: pPlane28
+    100026: pPlane29
+    100028: pPlane29 1
+    100030: pPlane31
+    100032: //RootNode
+    100034: shiroko_bag_1
+    100036: shiroko_bag_2
+    100038: shiroko_bag_3
+    100040: shiroko_bag_end
+    100042: shiroko_bag_root
+    100044: warter_TP
+    100046: warter_TP 1
+    100048: shiroko_bag
+    400000: back
+    400002: back1
+    400004: back2
+    400006: floor
+    400008: line
+    400010: line 1
+    400012: line 2
+    400014: polySurface173
+    400016: polySurface173 1
+    400018: polySurface173 2
+    400020: pPlane26
+    400022: pPlane27
+    400024: pPlane28
+    400026: pPlane29
+    400028: pPlane29 1
+    400030: pPlane31
+    400032: //RootNode
+    400034: shiroko_bag_1
+    400036: shiroko_bag_2
+    400038: shiroko_bag_3
+    400040: shiroko_bag_end
+    400042: shiroko_bag_root
+    400044: warter_TP
+    400046: warter_TP 1
+    400048: shiroko_bag
+    2100000: m_shiroko_back_TP
+    2100002: m_shiroko_back
+    2100004: m_shiroko_acc
+    2300000: floor
+    2300002: line
+    2300004: line 1
+    2300006: line 2
+    2300008: polySurface173
+    2300010: polySurface173 1
+    2300012: polySurface173 2
+    2300014: pPlane26
+    2300016: pPlane27
+    2300018: pPlane28
+    2300020: pPlane29
+    2300022: pPlane29 1
+    2300024: pPlane31
+    3300000: floor
+    3300002: line
+    3300004: line 1
+    3300006: line 2
+    3300008: polySurface173
+    3300010: polySurface173 1
+    3300012: polySurface173 2
+    3300014: pPlane26
+    3300016: pPlane27
+    3300018: pPlane28
+    3300020: pPlane29
+    3300022: pPlane29 1
+    3300024: pPlane31
+    4300000: pPlane27
+    4300002: pPlane26
+    4300004: pPlane28
+    4300006: pPlane29
+    4300008: polySurface173
+    4300010: line
+    4300012: pPlane29
+    4300014: polySurface173
+    4300016: line
+    4300018: floor
+    4300020: polySurface173
+    4300022: line
+    4300024: pPlane31
+    4300026: shiroko_bag
+    9500000: //RootNode
+    13700000: shiroko_bag
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: m_shiroko_acc
+    second: {fileID: 2100000, guid: c270d8b3eda1dbf4ab9e85ff28f91961, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
