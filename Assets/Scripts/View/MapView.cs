@@ -17,6 +17,11 @@ public class MapView : MonoBehaviour
         return new Vector3(grid.x * MapView.TileSize, 0, grid.y * MapView.TileSize);
     }
 
+    public static Vector3 GetWorldPositionCenterFromGrid(Vector2Int grid)
+    {
+        return new Vector3(grid.x * MapView.TileSize + (MapView.TileSize / 2f), 0, grid.y * MapView.TileSize + (MapView.TileSize / 2f));
+    }
+
     public static Vector2Int GetGridFromWorldPosition(Vector3 worldPos)
     {
         return new Vector2Int(Mathf.FloorToInt(worldPos.x / MapView.TileSize), Mathf.FloorToInt(worldPos.z / MapView.TileSize));

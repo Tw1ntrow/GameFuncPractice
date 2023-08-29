@@ -1777,7 +1777,7 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 1
   m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 793596745}
+  m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 40
     OrthographicSize: 10
@@ -4565,7 +4565,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   hiRightObj: {fileID: 34397245}
-  CameraController: {fileID: 0}
+  CameraController: {fileID: 1669608095}
 --- !u!114 &1669608095
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,22 +8,24 @@ namespace ProjectX.Battle.View.Unit
     {
         [SerializeField]
         private Animator animator;
-        
-        private const string moveTrigger = "Move";
-        private const string idleTrigger = "Idle";
+
+        private const string IdleTrigger = "Idle";
+        private const string TurnTrigger = "Turn";
+        private const string MoveTrigger = "Move";
+
+        public void Turn()
+        {
+            animator.SetTrigger(TurnTrigger);
+        }
+
         public void Move()
         {
-            animator.SetFloat("Speed", 1f);
+            animator.SetTrigger(MoveTrigger);
         }
 
         public void Idle()
         {
-            animator.SetTrigger(idleTrigger);
-        }
-
-        public void SetSpeed(float speed)
-        {
-            animator.SetFloat("Speed", speed);
+            animator.SetTrigger(IdleTrigger);
         }
 
     }

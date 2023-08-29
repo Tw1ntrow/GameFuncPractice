@@ -2,6 +2,7 @@ using DG.Tweening;
 using ProjectX.Battle.View.Unit;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,42 +21,55 @@ namespace ProjectX.Battle.View.Action
         [SerializeField]
         private MoveCameraController CameraController;
 
-        private Vector3 prepostion;
-        private StudentBase student;
+
+        // 1グリッドあたりの移動時間
+        private float speedPerGrid = 0.75f;
         private void Start()
         {
-            // 確認用
-            //var student = GetComponent<StudentBase>();
-            //Act(student);
-            Select(new List<Vector2Int>() { new Vector2Int(0,0),
-            new Vector2Int(0,1),new Vector2Int(0,2),new Vector2Int(1,0),new Vector2Int(1,2), new Vector2Int(2, 0),
-                new Vector2Int(2, 1),new Vector2Int(1, 1),new Vector2Int(2, 2)  });
+            //Select(new List<Vector2Int>() { new Vector2Int(0,0),
+            //new Vector2Int(0,1),new Vector2Int(0,2),new Vector2Int(1,0),new Vector2Int(1,2), new Vector2Int(2, 0),
+            //    new Vector2Int(2, 1),new Vector2Int(1, 1),new Vector2Int(2, 2)  });
         }
 
         private void Update()
         {
-            //var currentVel = (transform.position - prepostion)/ Time.deltaTime;
-            //student.SetSpeed(currentVel.magnitude);
-            //prepostion = transform.position;
-            //Debug.Log(currentVel.magnitude.ToString());
             var selectingGrid = HighlightGridUnderMouse();
+            // 右クリックで移動
             if (Mouse.current.rightButton.wasPressedThisFrame && selectingGrid.x != -1)
             {
                 var student = GetComponent<StudentBase>();
-                Act(student, selectingGrid);
+                Act(student, new Vector2Int[] { selectingGrid,new Vector2Int(1,3)});
             }
         }
 
-        public void Act(StudentBase student,Vector2Int moveGrid)
+        /// <summary>
+        /// 移動するユニットのTransformを制御する
+        /// 右クリックしたグリッドの向きに振り向く→移動
+        /// </summary>
+        /// <param name="student"></param>
+        /// <param name="routeGrid"></param>
+        public void Act(StudentBase student,Vector2Int[] routeGrid)
         {
-            CameraController.Changed(true);
-            student.transform.DOMove(new Vector3(moveGrid.x * MapView.TileSize + MapView.TileSize / 2f,
-                0f, moveGrid.y * MapView.TileSize + MapView.TileSize / 2f),3f)
-                .SetEase(Ease.Unset)
-                .OnComplete(() => { student.Idle(); CameraController.Changed(false); });
-            student.Move();
-            prepostion = transform.position;
-            this.student = student;
+            student.transform.DOLookAt(MapView.GetWorldPositionCenterFromGrid(routeGrid[0]),1).
+                OnComplete(Move);
+            student.Turn();
+
+            void Move()
+            {
+                student.Move();
+                List<Vector3> routePos = new List<Vector3>();
+
+                foreach (var grid in routeGrid)
+                {
+                    routePos.Add(MapView.GetWorldPositionCenterFromGrid(grid));
+                }
+
+                CameraController.Changed(true);
+                student.transform.DOPath(routePos.ToArray(), routePos.Count * speedPerGrid)
+                    .SetLookAt(0.1f)
+                    .SetEase(Ease.Linear)
+                    .OnComplete(() => { student.Idle(); CameraController.Changed(false); });
+            }
         }
 
         public void Select(List<Vector2Int> movableGrids)
@@ -147,8 +161,6 @@ namespace ProjectX.Battle.View.Action
                 // ワールド座標をグリッドの座標に変換
                 int gridX = Mathf.FloorToInt(hitPoint.x / MapView.TileSize);
                 int gridY = Mathf.FloorToInt(hitPoint.z / MapView.TileSize);  // Y軸方向ではなく、Z軸方向の座標を使用していることに注意
-
-                Debug.Log($"Grid Position: ({gridX}, {gridY})");
 
                 // ここでハイライト処理を実装（例えば、該当グリッドを青くするなど）
                 HighlightGrid(gridX, gridY);
