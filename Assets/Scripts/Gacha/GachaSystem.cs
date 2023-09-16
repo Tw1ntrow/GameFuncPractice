@@ -42,6 +42,8 @@ public class GachaSystem : MonoBehaviour
 
     [SerializeField]
     private Text resultText;
+    [SerializeField]
+    private Text multiDrawResultText;
 
     private List<float> cumulativeRarityProbabilities = new List<float>();
 
@@ -72,31 +74,72 @@ public class GachaSystem : MonoBehaviour
         List<GachaItem> possibleItems = items.FindAll(item => item.rarity == drawnRarity);
         GachaItem drawnItem = possibleItems[Random.Range(0, possibleItems.Count)];
 
-        DisplayResult(drawnItem);
+        resultText.text = "åãâ :" + drawnItem.name;
+        resultText.color = GetColorForRarity(drawnItem);
     }
 
-    private void DisplayResult(GachaItem item)
+    private Color GetColorForRarity(GachaItem item)
     {
-        resultText.text = "åãâ :" + item.name;
-
         switch (item.rarity)
         {
             case Rarity.Common:
-                resultText.color = Color.white;
-                break;
+                return Color.white;
             case Rarity.Uncommon:
-                resultText.color = Color.green;
-                break;
+                return Color.green;
             case Rarity.Rare:
-                resultText.color = Color.blue;
-                break;
+                return Color.blue;
             case Rarity.UltraRare:
-                resultText.color = Color.magenta;
-                break;
+                return Color.magenta;
             case Rarity.Legendary:
-                resultText.color = Color.yellow;
-                break;
+                return Color.yellow;
+            default: 
+                return Color.white;
         }
+    }
+
+    public void Draw10Gacha()
+    {
+        List<GachaItem> drawnItems = new List<GachaItem>();
+        for (int i = 0; i < 10; i++)
+        {
+            drawnItems.Add(DrawSingleGacha());
+        }
+
+        DisplayMultiDrawResult(drawnItems);
+    }
+
+    private GachaItem DrawSingleGacha()
+    {
+        float randRarity = Random.value;
+        Rarity drawnRarity = Rarity.Common;
+        for (int i = 0; i < cumulativeRarityProbabilities.Count; i++)
+        {
+            if (randRarity <= cumulativeRarityProbabilities[i])
+            {
+                drawnRarity = rarityProbabilities[i].rarity;
+                break;
+            }
+        }
+
+        List<GachaItem> possibleItems = items.FindAll(item => item.rarity == drawnRarity);
+        return possibleItems[Random.Range(0, possibleItems.Count)];
+    }
+
+    private void DisplayMultiDrawResult(List<GachaItem> drawnItems)
+    {
+        string resultStr = "10ÉKÉ`ÉÉ åãâ ÅI:\n";
+        for (int i = 0; i < drawnItems.Count; i++)
+        {
+            Color color = GetColorForRarity(drawnItems[i]);
+            string colorCode = ColorUtility.ToHtmlStringRGB(color);
+            resultStr += string.Format("{0}òAñ⁄: <color=#{1}>{2}</color>\n", i + 1, colorCode, drawnItems[i].name);
+        }
+        multiDrawResultText.text = resultStr;
+    }
+
+    public void On10GachaButtonClicked()
+    {
+        Draw10Gacha();
     }
 
     public void OnGachaButtonClicked()
