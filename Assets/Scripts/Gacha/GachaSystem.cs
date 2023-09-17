@@ -56,6 +56,9 @@ public class GachaSystem : MonoBehaviour
             totalProbability += rarityProb.probability;
             cumulativeRarityProbabilities.Add(totalProbability);
         }
+        ResetBox();
+
+
     }
 
     public void DrawGacha()
@@ -135,6 +138,47 @@ public class GachaSystem : MonoBehaviour
             resultStr += string.Format("{0}連目: <color=#{1}>{2}</color>\n", i + 1, colorCode, drawnItems[i].name);
         }
         multiDrawResultText.text = resultStr;
+    }
+
+    private List<GachaItem> currentBox = new List<GachaItem>();
+
+    private void ResetBox()
+    {
+        currentBox = new List<GachaItem>(items); // 初期アイテムリストでボックスをリセット
+    }
+
+    private GachaItem DrawBoxGacha()
+    {
+        if (currentBox.Count == 0)
+        {
+            resultText.text = "ドロップボックスが空です！";
+            resultText.color = Color.red;
+            return null;
+        }
+
+        int index = Random.Range(0, currentBox.Count);
+        GachaItem drawnItem = currentBox[index];
+        currentBox.RemoveAt(index);
+
+        return drawnItem;
+    }
+
+    public void OnResetDropBoxGacha()
+    {
+        resultText.text = "ドロップボックスをリセットしました！";
+        resultText.color = Color.red;
+        ResetBox();
+    }
+
+    public void OnBoxGachaButtonClicked()
+    {
+        GachaItem drawnItem = DrawBoxGacha();
+        if(drawnItem == null)
+        {
+            return;
+        }
+        resultText.text = "ドロップボックス 結果:" + drawnItem.name;
+        resultText.color = GetColorForRarity(drawnItem);
     }
 
     public void On10GachaButtonClicked()
