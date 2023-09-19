@@ -9,7 +9,10 @@ public class GachaSystem : MonoBehaviour
     {
         public string name;
         public Rarity rarity;
+        public bool isPickup; // ピックアップアイテムかどうか
+        [Range(0, 1)] public float pickupProbability; // ピックアップ確率
     }
+
 
     [System.Serializable]
     public class RarityProbability
@@ -37,7 +40,7 @@ public class GachaSystem : MonoBehaviour
         new RarityProbability() { rarity = Rarity.Uncommon, probability = 0.2f },
         new RarityProbability() { rarity = Rarity.Rare, probability = 0.08f },
         new RarityProbability() { rarity = Rarity.UltraRare, probability = 0.019f },
-        new RarityProbability() { rarity = Rarity.Legendary, probability = 0.001f }
+        new RarityProbability() { rarity = Rarity.Legendary, probability = 0.001f },
     };
 
     [SerializeField]
@@ -79,9 +82,23 @@ public class GachaSystem : MonoBehaviour
         return DrawSingleGacha();
     }
 
+    private GachaItem CheckPickupAndDraw()
+    {
+        List<GachaItem> pickupItems = items.FindAll(item => item.isPickup);
+        foreach (var pickupItem in pickupItems)
+        {
+            if (Random.value < pickupItem.pickupProbability)
+            {
+                return pickupItem;
+            }
+        }
+
+        return CheckTendonAndDraw();
+    }
+
     public void DrawGacha()
     {
-        GachaItem drawnItem = CheckTendonAndDraw();
+        GachaItem drawnItem = CheckPickupAndDraw();
 
         resultText.text = "結果:" + drawnItem.name;
         resultText.color = GetColorForRarity(drawnItem);
@@ -92,7 +109,7 @@ public class GachaSystem : MonoBehaviour
         List<GachaItem> drawnItems = new List<GachaItem>();
         for (int i = 0; i < 10; i++)
         {
-            drawnItems.Add(CheckTendonAndDraw());
+            drawnItems.Add(CheckPickupAndDraw());
         }
 
         DisplayMultiDrawResult(drawnItems);

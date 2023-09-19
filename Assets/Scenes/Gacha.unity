@@ -1117,20 +1117,36 @@ MonoBehaviour:
   items:
   - name: Common
     rarity: 0
+    isPickup: 0
+    pickupProbability: 0
   - name: UnCommon
     rarity: 1
+    isPickup: 0
+    pickupProbability: 0
   - name: Rare
     rarity: 2
+    isPickup: 0
+    pickupProbability: 0
   - name: UltraRare
     rarity: 3
+    isPickup: 0
+    pickupProbability: 0
   - name: Legendary
     rarity: 4
+    isPickup: 0
+    pickupProbability: 0
+  - name: PickupLegendary
+    rarity: 4
+    isPickup: 1
+    pickupProbability: 0.829
   resultText: {fileID: 2115586593}
   multiDrawResultText: {fileID: 2115586593}
   maxDrawsForTendon: 100
   tendonItem:
     name: Legendary
     rarity: 4
+    isPickup: 0
+    pickupProbability: 0
 --- !u!1 &1470973158
 GameObject:
   m_ObjectHideFlags: 0
