@@ -44,7 +44,12 @@ public class GachaSystem : MonoBehaviour
     private Text resultText;
     [SerializeField]
     private Text multiDrawResultText;
+    [SerializeField]
+    private int maxDrawsForTendon = 100;
+    [SerializeField]
+    private GachaItem tendonItem; // 天丼アイテム
 
+    private int drawCounter = 0;
     private List<float> cumulativeRarityProbabilities = new List<float>();
 
     private void Start()
@@ -61,24 +66,36 @@ public class GachaSystem : MonoBehaviour
 
     }
 
-    public void DrawGacha()
+    private GachaItem CheckTendonAndDraw()
     {
-        float randRarity = Random.value;
-        Rarity drawnRarity = Rarity.Common;
-        for (int i = 0; i < cumulativeRarityProbabilities.Count; i++)
+        drawCounter++;
+
+        if (drawCounter >= maxDrawsForTendon)
         {
-            if (randRarity <= cumulativeRarityProbabilities[i])
-            {
-                drawnRarity = rarityProbabilities[i].rarity;
-                break;
-            }
+            drawCounter = 0; // カウンターリセット
+            return tendonItem; // 天丼アイテムを返す
         }
 
-        List<GachaItem> possibleItems = items.FindAll(item => item.rarity == drawnRarity);
-        GachaItem drawnItem = possibleItems[Random.Range(0, possibleItems.Count)];
+        return DrawSingleGacha();
+    }
+
+    public void DrawGacha()
+    {
+        GachaItem drawnItem = CheckTendonAndDraw();
 
         resultText.text = "結果:" + drawnItem.name;
         resultText.color = GetColorForRarity(drawnItem);
+    }
+
+    public void Draw10Gacha()
+    {
+        List<GachaItem> drawnItems = new List<GachaItem>();
+        for (int i = 0; i < 10; i++)
+        {
+            drawnItems.Add(CheckTendonAndDraw());
+        }
+
+        DisplayMultiDrawResult(drawnItems);
     }
 
     private Color GetColorForRarity(GachaItem item)
@@ -98,17 +115,6 @@ public class GachaSystem : MonoBehaviour
             default: 
                 return Color.white;
         }
-    }
-
-    public void Draw10Gacha()
-    {
-        List<GachaItem> drawnItems = new List<GachaItem>();
-        for (int i = 0; i < 10; i++)
-        {
-            drawnItems.Add(DrawSingleGacha());
-        }
-
-        DisplayMultiDrawResult(drawnItems);
     }
 
     private GachaItem DrawSingleGacha()

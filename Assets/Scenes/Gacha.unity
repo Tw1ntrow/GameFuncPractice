@@ -1127,6 +1127,10 @@ MonoBehaviour:
     rarity: 4
   resultText: {fileID: 2115586593}
   multiDrawResultText: {fileID: 2115586593}
+  maxDrawsForTendon: 100
+  tendonItem:
+    name: Legendary
+    rarity: 4
 --- !u!1 &1470973158
 GameObject:
   m_ObjectHideFlags: 0
