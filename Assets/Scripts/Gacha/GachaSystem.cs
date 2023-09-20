@@ -21,6 +21,14 @@ public class GachaSystem : MonoBehaviour
         [Range(0, 1)] public float probability;
     }
 
+    [System.Serializable]
+    public class StepUpInfo
+    {
+        public int step;
+        public Rarity boostedRarity;
+        [Range(0, 1)] public float boostedProbability;
+    }
+
     public enum Rarity
     {
         Common,
@@ -51,6 +59,11 @@ public class GachaSystem : MonoBehaviour
     private int maxDrawsForTendon = 100;
     [SerializeField]
     private GachaItem tendonItem; // 天丼アイテム
+
+    [SerializeField]
+    private List<StepUpInfo> stepUpDetails; // ステップアップの詳細リスト
+
+    private int currentStep = 1; // 現在のステップ
 
     private int drawCounter = 0;
     private List<float> cumulativeRarityProbabilities = new List<float>();
@@ -186,6 +199,36 @@ public class GachaSystem : MonoBehaviour
         return drawnItem;
     }
 
+
+    // 特定の回数ガチャを引いた場合、特定のレアリティの確率を変動させる
+    private GachaItem CheckStepUpAndDraw()
+    {
+        StepUpInfo currentStepInfo = stepUpDetails.Find(info => info.step == currentStep);
+        if (currentStepInfo != null)
+        {
+            if (Random.value < currentStepInfo.boostedProbability)
+            {
+                List<GachaItem> possibleItems = items.FindAll(item => item.rarity == currentStepInfo.boostedRarity);
+                if (possibleItems.Count > 0)
+                {
+                    return possibleItems[Random.Range(0, possibleItems.Count)];
+                }
+            }
+        }
+
+        return CheckPickupAndDraw();
+    }
+
+    public void DrawStepUpGacha()
+    {
+        GachaItem drawnItem = CheckStepUpAndDraw();
+
+        resultText.text = "ステップ" + currentStep + " 結果:" + drawnItem.name;
+        resultText.color = GetColorForRarity(drawnItem);
+
+        currentStep++; // ステップを進める
+    }
+
     public void OnResetDropBoxGacha()
     {
         resultText.text = "ドロップボックスをリセットしました！";
@@ -202,6 +245,11 @@ public class GachaSystem : MonoBehaviour
         }
         resultText.text = "ドロップボックス 結果:" + drawnItem.name;
         resultText.color = GetColorForRarity(drawnItem);
+    }
+
+    public void OnStepUpGachaButtonClicked()
+    {
+        DrawStepUpGacha();
     }
 
     public void On10GachaButtonClicked()
