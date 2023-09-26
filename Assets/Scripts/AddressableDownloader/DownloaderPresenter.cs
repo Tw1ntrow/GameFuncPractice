@@ -10,8 +10,6 @@ public class DownloaderPresenter : MonoBehaviour
     [SerializeField]
     private UnityEngine.UI.Image image;
 
-
-
     void Start()
     {
         AssetDownloader.instance.ProgressChanged += UpdateProgress;

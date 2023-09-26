@@ -187,7 +187,6 @@ public class AssetDownloader : MonoBehaviour
     /// <param name="key">キャッシュをクリアするアセットのキー</param>
     public async Task ClearCacheForAsset(string key)
     {
-        // アセットのリソースロケーションを取得
         var locations = await Addressables.LoadResourceLocationsAsync(key).Task;
         foreach (var location in locations)
         {
