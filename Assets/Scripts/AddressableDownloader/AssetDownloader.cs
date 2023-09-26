@@ -17,11 +17,40 @@ public class AssetDownloader : MonoBehaviour
         public int completedAssets;
     }
 
+    // IResourceLocation
+    public class PrioritizedResourceLocation
+    {
+        public IResourceLocation location;
+        public int priority;
+    }
+
+    public void SetDownloadPriority(IResourceLocation location, int priority)
+    {
+        var prioritized = new PrioritizedResourceLocation() { location = location, priority = priority };
+        prioritizedLocations.Add(prioritized);
+    }
+
+    private List<PrioritizedResourceLocation> prioritizedLocations = new List<PrioritizedResourceLocation>();
+
     public event Action<DownloadInfo> ProgressChanged;
     public event Action<DownloadInfo> AssetDownloadCompleted;
     public event Action OnLoadCompleted;
 
     public static AssetDownloader instance;
+
+
+    private bool pauseDownload = false;
+
+
+    public void PauseDownload()
+    {
+        pauseDownload = true;
+    }
+
+    public void ResumeDownload()
+    {
+        pauseDownload = false;
+    }
 
     private void Awake()
     {
@@ -43,24 +72,44 @@ public class AssetDownloader : MonoBehaviour
     // DependencyHashCode毎にグループ化する事で、アセットバンドル毎に分割してロードができる
     public async void DownloadAsset(string label)
     {
-        // ラベルに紐づくアセットのリソースロケーションを取得
         var locations = await Addressables.LoadResourceLocationsAsync(label).Task;
 
+        // 優先順位に基づいてソートする
+        var sortedLocations = locations
+            .Select(loc => new PrioritizedResourceLocation
+            {
+                location = loc,
+                priority = prioritizedLocations.FirstOrDefault(p => p.location.PrimaryKey == loc.PrimaryKey)?.priority ?? int.MaxValue
+            })
+            .OrderBy(p => p.priority)
+            .Select(p => p.location)
+            .ToList();
+
         // DependencyHashCodeでグループ化
-        var locationGroups = locations.ToList().GroupBy(x => x.DependencyHashCode);
+        var locationGroups = sortedLocations.GroupBy(x => x.DependencyHashCode);
 
         int completedAssets = 0;
         int totalAssets = locationGroups.Count();
 
         foreach (var locationGroup in locationGroups)
         {
-            // 各グループごとに依存関係のダウンロードを開始
+            // このループ内で一時停止の確認
+            while (pauseDownload)
+            {
+                await Task.Delay(100);
+            }
+
             var handle = Addressables.DownloadDependenciesAsync(locationGroup.ToList());
 
             // ダウンロード進行状況
             while (!handle.IsDone)
             {
-                // イベントを発行
+                // 一時停止の確認
+                while (pauseDownload)
+                {
+                    await Task.Delay(100);
+                }
+
                 ProgressChanged?.Invoke(new DownloadInfo
                 {
                     location = locationGroup.First(),
@@ -71,18 +120,8 @@ public class AssetDownloader : MonoBehaviour
                 await Task.Yield();
             }
 
-            completedAssets += 1;
-
-            AssetDownloadCompleted?.Invoke(new DownloadInfo
-            {
-                location = locationGroup.First(),
-                handle = handle,
-                totalAssets = totalAssets,
-                completedAssets = completedAssets
-            });
+            OnLoadCompleted?.Invoke();
         }
-
-        OnLoadCompleted?.Invoke();
     }
 
     // アセットをロード
