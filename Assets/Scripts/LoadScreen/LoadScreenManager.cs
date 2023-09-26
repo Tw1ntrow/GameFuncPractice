@@ -1,21 +1,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// ゲーム全体のロード処理を管理する
-/// ビューの制御もここで行う
-/// シングルトンの方が良いかも
-/// </summary>
 public class LoadScreenManager : MonoBehaviour
 {
-    public LoadScreenView loadScreen;
+    public static LoadScreenManager Instance { get; private set; } // シングルトンのインスタンス
 
+    public LoadScreenView loadScreen;
     private List<LoadTask> loadTasks = new List<LoadTask>();
+
+    private void Awake()
+    {
+        // シングルトンの初期化
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     // ロード処理の開始
     public void StartLoad(IEnumerable<ILoadable> loadables)
     {
-
         // 新しいタスクを作成してロード開始
         foreach (var loadable in loadables)
         {
