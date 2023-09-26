@@ -180,4 +180,19 @@ public class AssetDownloader : MonoBehaviour
             throw new Exception();
         }
     }
+
+    /// <summary>
+    /// 指定したアセットのキャッシュをクリアする
+    /// </summary>
+    /// <param name="key">キャッシュをクリアするアセットのキー</param>
+    public async Task ClearCacheForAsset(string key)
+    {
+        // アセットのリソースロケーションを取得
+        var locations = await Addressables.LoadResourceLocationsAsync(key).Task;
+        foreach (var location in locations)
+        {
+            Addressables.ClearDependencyCacheAsync(location);
+        }
+    }
+
 }
