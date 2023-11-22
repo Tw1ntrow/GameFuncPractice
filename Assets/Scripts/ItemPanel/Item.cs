@@ -8,5 +8,6 @@ namespace ItemPanel
         public string itemName;
         public Sprite itemIcon;
         public string description;
+        public int quantity;
     }
 }
