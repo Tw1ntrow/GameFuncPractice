@@ -16,7 +16,7 @@ public class ItemRewardDialog : MonoBehaviour
             var panel = Instantiate(itemPanelPrefab, itemPanelParent);
             // 本来はアイテムのIDを受け取るがIDから読み取る機構は無いので無視する
             // イベントは特に指定しない
-            panel.GetComponent<ItemPanel>().ViewItem(i.ToString(), "1", items[i]);
+            //panel.GetComponent<ItemPanel>().ViewItem(i.ToString(), "1", items[i]);
         }
     }
 

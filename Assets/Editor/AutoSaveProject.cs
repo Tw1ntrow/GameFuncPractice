@@ -27,7 +27,7 @@ public class AutoSaveProject
     private static void SaveProject()
     {
         EditorApplication.SaveScene();
-        EditorApplication.SaveAssets();
+        AssetDatabase.SaveAssets();
         Debug.Log("Auto Save: Project saved.");
     }
 }

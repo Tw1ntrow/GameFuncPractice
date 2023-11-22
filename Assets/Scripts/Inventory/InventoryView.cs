@@ -19,8 +19,8 @@ public class InventoryView : MonoBehaviour
     {
         foreach (InventoryItem item in inventory)
         {
-            ItemPanel itemPanel = Instantiate(ItemPanelPrefab, ItemPanelParent).GetComponent<ItemPanel>();
-            itemPanel.ViewItem(item.Item.Name, item.Quantity.ToString(), item.Item.Id, onClock);
+            //ItemPanel itemPanel = Instantiate(ItemPanelPrefab, ItemPanelParent).GetComponent<ItemPanel>();
+            //itemPanel.ViewItem(item.Item.Name, item.Quantity.ToString(), item.Item.Id, onClock);
         }
 
     }

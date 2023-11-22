@@ -11,8 +11,8 @@ public class MailContent : MonoBehaviour
     private Text body;
     [SerializeField]
     private Text title;
-    [SerializeField]
-    private ItemPanel itemPanel;
+    //[SerializeField]
+    //private ItemPanel itemPanel;
     [SerializeField]
     private Transform itemParent;
 
@@ -25,7 +25,7 @@ public class MailContent : MonoBehaviour
     {
         this.body.text = mailData.body;
         this.title.text = mailData.title;
-        itemPanel.ViewItem(mailData.itemId, mailData.itemCount.ToString(), 0);
+        //itemPanel.ViewItem(mailData.itemId, mailData.itemCount.ToString(), 0);
         this.onGetButton = onGetButton;
         this.mailData = mailData;
     }
