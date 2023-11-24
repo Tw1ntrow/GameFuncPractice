@@ -7,10 +7,14 @@ public class IAPManager : MonoBehaviour, IStoreListener
     private static IStoreController m_StoreController;
     private static IExtensionProvider m_StoreExtensionProvider;
 
+    public static event Action OnNonConsumablePurchased;
+
     [SerializeField]
     private string consumableProductId = "com.company.gamename.product1";
     [SerializeField]
     private string subscriptionProductId = "com.company.gamename.subscription1";
+    [SerializeField]
+    private string nonConsumableProductId = "com.company.gamename.nonconsumable1";
 
     void Start()
     {
@@ -37,6 +41,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
             }
             builder.AddProduct(consumableProductId, ProductType.Consumable);
             builder.AddProduct(subscriptionProductId, ProductType.Subscription);
+            builder.AddProduct(nonConsumableProductId, ProductType.NonConsumable);
             UnityPurchasing.Initialize(this, builder);
         }
         catch (Exception e)
@@ -76,17 +81,27 @@ public class IAPManager : MonoBehaviour, IStoreListener
         Debug.LogError($"OnInitializeFailed InitializationFailureReason:{error}");
     }
 
+    /// <summary>
+    /// çwì¸ämíËéûÇÃèàóù
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
     {
         try
         {
             if (String.Equals(args.purchasedProduct.definition.id, consumableProductId, StringComparison.Ordinal))
             {
-                // è¡ñ’ïiÇÃçwì¸èàóù
+                Debug.Log($"ProcessPurchase: PASS. Non-Consumable Product: '{args.purchasedProduct.definition.id}'");
             }
             else if (String.Equals(args.purchasedProduct.definition.id, subscriptionProductId, StringComparison.Ordinal))
             {
                 Debug.Log($"ProcessPurchase: PASS. Subscription Product: '{args.purchasedProduct.definition.id}'");
+            }
+            else if (String.Equals(args.purchasedProduct.definition.id, nonConsumableProductId, StringComparison.Ordinal))
+            {
+                Debug.Log($"ProcessPurchase: PASS. Non-Consumable Product: '{args.purchasedProduct.definition.id}'");
+                OnNonConsumablePurchased?.Invoke();
             }
             else
             {
@@ -208,4 +223,16 @@ public class IAPManager : MonoBehaviour, IStoreListener
         }
     }
 
+
+    public void BuyNonConsumable()
+    {
+        try
+        {
+            BuyProductID(nonConsumableProductId);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"BuyNonConsumable Exception: {e.Message}");
+        }
+    }
 }

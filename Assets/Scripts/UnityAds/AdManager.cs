@@ -7,6 +7,21 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
     private string videoPlacementId = "video";
     private string bannerPlacementId = "banner";
 
+    // 広告を表示するかどうかのフラグ
+    private bool showAds = true;
+
+    private void Awake()
+    {
+        showAds = PlayerPrefs.GetInt("showAds", 1) == 1;
+    }
+
+    public void DisableAdsPermanently()
+    {
+        showAds = false;
+        PlayerPrefs.SetInt("showAds", 0);
+        PlayerPrefs.Save();
+    }
+
     void Start()
     {
         // テストモードで初期化
@@ -18,25 +33,25 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
 
     public void ShowVideoAd()
     {
-        if (Advertisement.isInitialized)
+        if (Advertisement.isInitialized && showAds)
         {
             Advertisement.Show(videoPlacementId, this);
         }
         else
         {
-            Debug.Log("Video ad not ready.");
+            Debug.Log("Video ad not ready or non-consumable item purchased.");
         }
     }
 
     public void ShowBannerAd()
     {
-        if (Advertisement.isInitialized)
-        {   
+        if (Advertisement.isInitialized && showAds)
+        {
             Advertisement.Banner.Show(bannerPlacementId);
         }
         else
         {
-            Debug.Log("Banner ad not ready.");
+            Debug.Log("Banner ad not ready or non-consumable item purchased.");
         }
     }
 
@@ -78,5 +93,10 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
     public void OnInitializationFailed(UnityAdsInitializationError error, string message)
     {
         Debug.LogError($"Failed to initialize Unity Ads: {message}");
+    }
+
+    public void PurchaseNonConsumable()
+    {
+        showAds = false;
     }
 }
