@@ -1,14 +1,39 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DrawingManager : MonoBehaviour
 {
     [SerializeField]
     private LineRenderer lineRenderer;
+    [SerializeField]
+    private Slider redSlider, greenSlider, blueSlider;
+    [SerializeField]
+    private Image colorDisplay;
 
     private Vector3 startMousePosition;
     private bool isMousePressed;
     private enum DrawingMode { Line, Square }
     private DrawingMode currentMode = DrawingMode.Line;
+
+    private void Start()
+    {
+        UpdateColor();
+    }
+
+    public void UpdateColor()
+    {
+        Color selectedColor = new Color(redSlider.value, greenSlider.value, blueSlider.value);
+        colorDisplay.color = selectedColor;
+        // 必要に応じて他のコンポーネントに色を適用する
+        ApplyColorToLineRenderer(selectedColor);
+    }
+
+
+    private void ApplyColorToLineRenderer(Color color)
+    {
+        lineRenderer.startColor = color; 
+        lineRenderer.endColor = color;
+    }
 
     void Update()
     {
