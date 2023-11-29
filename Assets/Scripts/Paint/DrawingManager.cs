@@ -1,3 +1,4 @@
+using SimpleFileBrowser;
 using System.Collections;
 using System.IO;
 using UnityEngine;
@@ -150,10 +151,18 @@ public class DrawingManager : MonoBehaviour
         screenImage.Apply();
 
         byte[] imageBytes = screenImage.EncodeToPNG();
-        string filePath = Path.Combine(Application.persistentDataPath, "savedDrawing.png");
-        File.WriteAllBytes(filePath, imageBytes);
+        // Simple File Browserの設定
+        FileBrowser.SetFilters(true, new FileBrowser.Filter("Images", ".png"));
+        FileBrowser.SetDefaultFilter(".png");
+        yield return FileBrowser.WaitForSaveDialog(FileBrowser.PickMode.Files, false, null, null, "Save as PNG", "Save");
 
-        Debug.Log($"Drawing saved to {filePath}");
+        // ユーザーがファイルを選択した場合
+        if (FileBrowser.Success)
+        {
+            string filePath = FileBrowser.Result.ToString();
+            File.WriteAllBytes(filePath, imageBytes);
+            Debug.Log($"Drawing saved to {filePath}");
+        }
     }
 
     private Rect GetScreenRectFromRectTransform(RectTransform rectTransform)
