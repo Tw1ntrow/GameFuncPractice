@@ -10,7 +10,7 @@ public class AudioWaveformVisualizer : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        samples = new float[256];
+        samples = new float[256];// ”gŒ`‚Ì’·‚³
         lineRenderer = gameObject.AddComponent<LineRenderer>();
 
         SetupLineRenderer();
