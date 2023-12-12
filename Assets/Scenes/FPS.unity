@@ -496,9 +496,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 100
+  jumpHeight: 100
   mouseSensitivity: 100
   playerBody: {fileID: 1019348292}
   playerCamera: {fileID: 1778393075}
+  gravity: -9.81
 --- !u!1 &1778393073
 GameObject:
   m_ObjectHideFlags: 0
