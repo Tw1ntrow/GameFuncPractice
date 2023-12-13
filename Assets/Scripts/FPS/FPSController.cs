@@ -16,11 +16,22 @@ namespace GameFunc
         private Camera playerCamera;
         [SerializeField]
         private float gravity = -9.81f;
+        [SerializeField]
+        private GameObject bulletPrefab;
+        [SerializeField]
+        private Transform bulletSpawnPoint;
+        [SerializeField]
+        private float fireRate = 0.1f;
+        [SerializeField]
+        private float bulletSpeed = 20f;
+        [SerializeField]
+        private float bulletLifeTime = 3f;
 
         private CharacterController controller;
         private float xRotation = 0f;
         private Vector3 velocity;
         private bool isGrounded;
+        private float nextFireTime = 0f;
 
         void Start()
         {
@@ -33,6 +44,7 @@ namespace GameFunc
             ProcessMouseLook();
             ProcessMovement();
             ProcessGravityAndJump();
+            ProcessShooting();
         }
 
         private void ProcessMouseLook()
@@ -70,6 +82,27 @@ namespace GameFunc
 
             velocity.y += gravity * Time.deltaTime;
             controller.Move(velocity * Time.deltaTime);
+        }
+
+        private void ProcessShooting()
+        {
+            if (Input.GetMouseButton(0))
+            {
+                Shoot();
+            }
+        }
+
+        private void Shoot()
+        {
+            GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+            Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
+
+            if (bulletRb != null)
+            {
+                bulletRb.AddForce(bulletSpawnPoint.forward * bulletSpeed, ForceMode.Impulse);
+            }
+
+            Destroy(bullet, bulletLifeTime);
         }
     }
 }
