@@ -94,12 +94,12 @@ namespace GameFunc
 
         private void Shoot()
         {
-            GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+            GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, playerCamera.transform.rotation);
             Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
 
             if (bulletRb != null)
             {
-                bulletRb.AddForce(bulletSpawnPoint.forward * bulletSpeed, ForceMode.Impulse);
+                bulletRb.AddForce(playerCamera.transform.forward * bulletSpeed, ForceMode.Impulse);
             }
 
             Destroy(bullet, bulletLifeTime);
