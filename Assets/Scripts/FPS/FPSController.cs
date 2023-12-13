@@ -94,6 +94,11 @@ namespace GameFunc
 
         private void Shoot()
         {
+            Vector3 cameraPosition = playerCamera.transform.position;
+
+            // 発射位置をプレイヤーカメラの位置に合わせる
+            bulletSpawnPoint.position = cameraPosition;
+
             GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, playerCamera.transform.rotation);
             Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
 
