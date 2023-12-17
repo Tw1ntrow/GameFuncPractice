@@ -53,6 +53,8 @@ public class CommonDialog : MonoBehaviour, IDialog,IBackButtonHandler
                 CreateButton(buttonParameter);
             }
         }
+
+        Assets.Scripts.BuckButton.BackButtonManager.Instance.SetCurrentDialog(this);
     }
 
     // ボタンを生成
@@ -90,6 +92,7 @@ public class CommonDialog : MonoBehaviour, IDialog,IBackButtonHandler
 
     public void CloseDialog()
     {
+        Assets.Scripts.BuckButton.BackButtonManager.Instance.ClearCurrentDialog();
         // ダイアログ閉じた際の見た目処理
         Destroy(this.gameObject);
     }
