@@ -1,10 +1,12 @@
 using UnityEngine;
 
-public class EntryPoint : MonoBehaviour
+public class ChatGptEntry : MonoBehaviour
 {
-    void Awake()
+    void Start()
     {
-        //new GameStateController { }.Initialize(new TestUnitCreator(), new TestMapCreatable());
+        var gpt = new ChatGptConnection();
+        //gpt.RequestAsync("Unityについて教えて下さい");
+        // トークン毎にお金が掛かるためコメントアウト
     }
 
 }
