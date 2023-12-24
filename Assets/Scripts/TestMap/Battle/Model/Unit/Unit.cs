@@ -1,7 +1,5 @@
-using Codice.Client.Common;
 using UniRx;
 using UnityEngine;
-using UnityEngine.VFX;
 
 namespace ProjectX.Battle
 {
