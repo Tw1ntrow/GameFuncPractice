@@ -1,22 +1,16 @@
 using UnityEngine;
+using UnityEngine.Windows.Speech;
 
 [RequireComponent(typeof(AudioSource))]
 public class MicrophoneInput : MonoBehaviour
 {
-    AudioSource audioSource;
-    [SerializeField]
-    private float sensitivity = 100;
-    [SerializeField]
-    private float loudnessThreshold = 1.0f;
-    [SerializeField]
-    private Vector3 maxScale = new Vector3(2.0f, 2.0f, 2.0f);
-    [SerializeField]
-    private Vector3 originalScale;
+    private AudioSource audioSource;
+    private KeywordRecognizer keywordRecognizer;
+    public string[] keywords = new string[] { "start", "stop", "pause" };
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        originalScale = transform.localScale;
 
         if (Microphone.devices.Length <= 0)
         {
@@ -30,31 +24,23 @@ public class MicrophoneInput : MonoBehaviour
 
         while (!(Microphone.GetPosition(null) > 0)) { }
         audioSource.Play();
+
+        keywordRecognizer = new KeywordRecognizer(keywords);
+        keywordRecognizer.OnPhraseRecognized += OnPhraseRecognized;
+        keywordRecognizer.Start();
     }
 
-    void Update()
+    private void OnPhraseRecognized(PhraseRecognizedEventArgs args)
     {
-        float loudness = GetAveragedVolume() * sensitivity;
-
-        if (loudness > loudnessThreshold)
-        {
-            transform.localScale = maxScale;
-        }
-        else
-        {
-            transform.localScale = originalScale;
-        }
+        Debug.Log("認識されたフレーズ: " + args.text);
     }
 
-    float GetAveragedVolume()
+    void OnDestroy()
     {
-        float[] data = new float[256];
-        float a = 0;
-        audioSource.GetOutputData(data, 0);
-        foreach (float s in data)
+        if (keywordRecognizer != null && keywordRecognizer.IsRunning)
         {
-            a += Mathf.Abs(s);
+            keywordRecognizer.OnPhraseRecognized -= OnPhraseRecognized;
+            keywordRecognizer.Stop();
         }
-        return a / 256;
     }
 }
