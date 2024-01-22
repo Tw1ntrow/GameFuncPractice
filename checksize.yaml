@@ -1,0 +1,24 @@
+name: Check PNG Dimensions
+
+on: [push]
+
+jobs:
+  check-png-dimensions:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check PNG file dimensions
+      run: |
+        max_width=1920
+        max_height=1080
+        files=$(git diff --name-only HEAD~1 -- '*.png')
+        for file in $files; do
+          echo "Checking dimensions for $file"
+          dimensions=$(identify -format "%wx%h" "$file")
+          width=$(echo $dimensions | cut -dx -f1)
+          height=$(echo $dimensions | cut -dx -f2)
+          if [ $width -ne $max_width ] || [ $height -ne $max_height ]; then
+            echo "$file does not meet the required dimensions (${max_width}x${max_height})."
+            exit 1
+          fi
+        done
